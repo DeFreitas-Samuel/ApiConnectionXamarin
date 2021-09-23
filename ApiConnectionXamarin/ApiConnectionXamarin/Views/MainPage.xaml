@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ApiConnectionXamarin.Views.MainPage"
+             xmlns:viewmodels="clr-namespace:ApiConnectionXamarin.ViewModels"
+             xmlns:services="clr-namespace:ApiConnectionXamarin.Services">
+    <!--<ContentPage.BindingContext>
+        <viewmodels:MainViewModel/>
+        <x:Arguments>
+            <services:MedicalApiService/>
+        </x:Arguments>
+    </ContentPage.BindingContext>-->
+    <ContentPage.Content>
+        <StackLayout>
+
+            <CollectionView ItemsSource="{Binding Outcomes}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                               <Label Grid.Column="1"
+                               Text="{Binding .}"
+                               FontAttributes="Bold" />
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Command="{Binding OutcomeCommand}" Text="Button"/>
+            <Label Text="{Binding Outcomes[4]}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
