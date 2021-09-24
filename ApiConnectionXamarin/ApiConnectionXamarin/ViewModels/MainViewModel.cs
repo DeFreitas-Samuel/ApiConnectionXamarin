@@ -1,7 +1,9 @@
 ﻿using ApiConnectionXamarin.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace ApiConnectionXamarin.ViewModels
@@ -34,11 +36,22 @@ namespace ApiConnectionXamarin.ViewModels
 
         private async void OnOutcome()
         {
-            var outcomeResponse = await _medicalApiService.GetOutcomesAsync();
-            if (outcomeResponse != null)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                Outcomes = new ObservableCollection<string>(outcomeResponse.Data); 
+                var outcomeResponse = await _medicalApiService.GetOutcomesAsync();
+                if (outcomeResponse != null)
+                {
+                    Outcomes = new ObservableCollection<string>(outcomeResponse.Data);
+                }
             }
+            else 
+            {
+                MainThread.BeginInvokeOnMainThread(async () => { 
+                    await Application.Current.MainPage.DisplayAlert("Alert", "There is not internet connection available. Connection to the api was not possible", "Ok"); 
+                });
+               
+            }
+
         }
 
         readonly IMedicalApiService _medicalApiService;
@@ -49,5 +62,6 @@ namespace ApiConnectionXamarin.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

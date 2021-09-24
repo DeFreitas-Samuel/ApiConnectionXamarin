@@ -1,5 +1,4 @@
 ﻿using ApiConnectionXamarin.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,6 +9,7 @@ namespace ApiConnectionXamarin.Services
 {
     public class MedicalApiService : IMedicalApiService
     {
+        IJsonSerializerService serializer = new JsonSerializerService();
         public async Task<OutcomeResponse> GetOutcomesAsync()
         {
             HttpClient httpClient = new HttpClient();
@@ -17,7 +17,7 @@ namespace ApiConnectionXamarin.Services
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                var outcomeResponse = JsonConvert.DeserializeObject<OutcomeResponse>(responseString);
+                var outcomeResponse = serializer.Deserialize<OutcomeResponse>(responseString);
                 return outcomeResponse;
             }
             return null;
